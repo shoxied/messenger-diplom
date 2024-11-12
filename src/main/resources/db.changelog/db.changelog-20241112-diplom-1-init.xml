@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet author="Ilia Ternovoi" id="20241112-diplom-1-init">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="roles"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="roles">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="roles_id_pk"/>
+            </column>
+            <column name="name" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="chat_type">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="chat_type_id_pk"/>
+            </column>
+            <column name="type_name" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="status">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="status_id_pk"/>
+            </column>
+            <column name="name" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="files">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="files_id_pk"/>
+            </column>
+            <column name="file_url" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="users">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="users_id_pk"/>
+            </column>
+            <column name="email" type="text">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="phone_number" type="text">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="first_name" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="avatar_url" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="post" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_date" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="users"
+                                 baseColumnNames="role_id"
+                                 constraintName="role_id_fk"
+                                 referencedTableName="roles"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="task">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="task_id_pk"/>
+            </column>
+            <column name="title" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="priority" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="executor_id" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="create_date" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deadline" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="task"
+                                 baseColumnNames="status_id"
+                                 constraintName="status_id_fk"
+                                 referencedTableName="status"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="task"
+                                 baseColumnNames="author_id"
+                                 constraintName="author_id_fk"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="task"
+                                 baseColumnNames="executor_id"
+                                 constraintName="executor_id_fk"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="space">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="space_id_pk"/>
+            </column>
+            <column name="name" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_date" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="space_users">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="space_users_id_pk"/>
+            </column>
+            <column name="space_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="space_users"
+                                 baseColumnNames="space_id"
+                                 constraintName="space_id_fk"
+                                 referencedTableName="space"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="space_users"
+                                 baseColumnNames="user_id"
+                                 constraintName="user_id_fk"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="user_chat_groups">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="user_chat_groups_id_pk"/>
+            </column>
+            <column name="name" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="user_chat_groups"
+                                 baseColumnNames="user_id"
+                                 constraintName="user_id_fk"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="chats">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="chats_id_pk"/>
+            </column>
+            <column name="space_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="chat_type_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creator_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="chats"
+                                 baseColumnNames="space_id"
+                                 constraintName="space_id_fk"
+                                 referencedTableName="space"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="chats"
+                                 baseColumnNames="chat_type_id"
+                                 constraintName="chat_type_id_fk"
+                                 referencedTableName="chat_type"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="chats"
+                                 baseColumnNames="creator_id"
+                                 constraintName="creator_id_fk"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="chat_groups">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="chat_groups_id_pk"/>
+            </column>
+            <column name="chat_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_chat_group_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="chat_groups"
+                                 baseColumnNames="chat_id"
+                                 constraintName="chat_id_fk"
+                                 referencedTableName="chats"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="chat_groups"
+                                 baseColumnNames="user_chat_group_id"
+                                 constraintName="user_chat_group_id_fk"
+                                 referencedTableName="user_chat_groups"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="chat_members">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="chat_members_id_pk"/>
+            </column>
+            <column name="chat_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="chat_members"
+                                 baseColumnNames="chat_id"
+                                 constraintName="chat_id_fk"
+                                 referencedTableName="chats"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="chat_members"
+                                 baseColumnNames="user_id"
+                                 constraintName="user_id_fk"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="messages">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="messages_id_pk"/>
+            </column>
+            <column name="chat_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_read" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="messages"
+                                 baseColumnNames="chat_id"
+                                 constraintName="chat_id_fk"
+                                 referencedTableName="chats"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="messages"
+                                 baseColumnNames="user_id"
+                                 constraintName="user_id_fk"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="tags">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="tags_id_pk"/>
+            </column>
+            <column name="name" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="messages_tags">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="messages_tags_id_pk"/>
+            </column>
+            <column name="tag_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="messages_tags"
+                                 baseColumnNames="tag_id"
+                                 constraintName="tag_id_fk"
+                                 referencedTableName="tags"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="messages_tags"
+                                 baseColumnNames="message_id"
+                                 constraintName="message_id_fk"
+                                 referencedTableName="messages"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="file_messages">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="file_messages_id_pk"/>
+            </column>
+            <column name="message_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="file_messages"
+                                 baseColumnNames="message_id"
+                                 constraintName="message_id_fk"
+                                 referencedTableName="messages"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="file_messages"
+                                 baseColumnNames="file_id"
+                                 constraintName="file_id_fk"
+                                 referencedTableName="files"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="description_file">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="description_file_id_pk"/>
+            </column>
+            <column name="task_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="description_file"
+                                 baseColumnNames="task_id"
+                                 constraintName="task_id_fk"
+                                 referencedTableName="task"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="description_file"
+                                 baseColumnNames="file_id"
+                                 constraintName="file_id_fk"
+                                 referencedTableName="files"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="commentaries">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="commentaries_id_pk"/>
+            </column>
+            <column name="text" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="task_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="commentaries"
+                                 baseColumnNames="task_id"
+                                 constraintName="task_id_fk"
+                                 referencedTableName="task"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="commentaries"
+                                 baseColumnNames="author_id"
+                                 constraintName="author_id_fk"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="commentary_file">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="commentary_file_id_pk"/>
+            </column>
+            <column name="file_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="commentary_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="commentary_file"
+                                 baseColumnNames="file_id"
+                                 constraintName="file_id_fk"
+                                 referencedTableName="files"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="commentary_file"
+                                 baseColumnNames="commentary_id"
+                                 constraintName="commentary_id_fk"
+                                 referencedTableName="commentaries"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+</databaseChangeLog>

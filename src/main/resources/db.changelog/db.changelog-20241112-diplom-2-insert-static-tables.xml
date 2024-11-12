@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet author="Ilia Ternovoi" id="20241112-diplom-2-insert-static-tables">
+
+        <insert tableName="roles"><column name="name" value="user"/></insert>
+        <insert tableName="roles"><column name="name" value="admin"/></insert>
+        <insert tableName="roles"><column name="name" value="owner"/></insert>
+        <insert tableName="roles"><column name="name" value="ai"/></insert>
+
+        <insert tableName="chat_type"><column name="type_name" value="chat"/></insert>
+        <insert tableName="chat_type"><column name="type_name" value="personal"/></insert>
+        <insert tableName="chat_type"><column name="type_name" value="channel"/></insert>
+        <insert tableName="chat_type"><column name="type_name" value="voice"/></insert>
+
+        <insert tableName="status"><column name="name" value="На рассмотрении"/></insert>
+        <insert tableName="status"><column name="name" value="К выполнению"/></insert>
+        <insert tableName="status"><column name="name" value="В работе"/></insert>
+        <insert tableName="status"><column name="name" value="В тестировании"/></insert>
+        <insert tableName="status"><column name="name" value="Закрыта"/></insert>
+
+    </changeSet>
+</databaseChangeLog>
