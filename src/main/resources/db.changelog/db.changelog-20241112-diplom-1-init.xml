@@ -10,38 +10,11 @@
             </not>
         </preConditions>
 
-        <createTable tableName="roles">
-            <column name="id" type="int" autoIncrement="true">
-                <constraints primaryKey="true" primaryKeyName="roles_id_pk"/>
-            </column>
-            <column name="name" type="text">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="chat_type">
-            <column name="id" type="int" autoIncrement="true">
-                <constraints primaryKey="true" primaryKeyName="chat_type_id_pk"/>
-            </column>
-            <column name="type_name" type="text">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="status">
-            <column name="id" type="int" autoIncrement="true">
-                <constraints primaryKey="true" primaryKeyName="status_id_pk"/>
-            </column>
-            <column name="name" type="text">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
         <createTable tableName="files">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" primaryKeyName="files_id_pk"/>
             </column>
-            <column name="file_url" type="text">
+            <column name="file" type="bytea">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -62,11 +35,10 @@
             <column name="last_name" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="role_id" type="int">
+            <column name="role" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="avatar_url" type="text">
-                <constraints nullable="false"/>
+            <column name="avatar" type="bytea">
             </column>
             <column name="password" type="text">
                 <constraints nullable="false"/>
@@ -78,11 +50,6 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="users"
-                                 baseColumnNames="role_id"
-                                 constraintName="role_id_fk"
-                                 referencedTableName="roles"
-                                 referencedColumnNames="id"/>
 
         <createTable tableName="task">
             <column name="id" type="int" autoIncrement="true">
@@ -94,7 +61,7 @@
             <column name="description" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="status_id" type="int">
+            <column name="status" type="text">
                 <constraints nullable="false"/>
             </column>
             <column name="priority" type="int">
@@ -187,10 +154,7 @@
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" primaryKeyName="chats_id_pk"/>
             </column>
-            <column name="space_id" type="int">
-                <constraints nullable="false"/>
-            </column>
-            <column name="chat_type_id" type="int">
+            <column name="chat_type" type="text">
                 <constraints nullable="false"/>
             </column>
             <column name="creator_id" type="int">
@@ -201,11 +165,6 @@
             </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="chats"
-                                 baseColumnNames="space_id"
-                                 constraintName="space_id_fk"
-                                 referencedTableName="space"
-                                 referencedColumnNames="id"/>
-        <addForeignKeyConstraint baseTableName="chats"
                                  baseColumnNames="chat_type_id"
                                  constraintName="chat_type_id_fk"
                                  referencedTableName="chat_type"
@@ -214,6 +173,28 @@
                                  baseColumnNames="creator_id"
                                  constraintName="creator_id_fk"
                                  referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="space_chats">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="space_chats_id_pk"/>
+            </column>
+            <column name="chat_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="space_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="space_chats"
+                                 baseColumnNames="chat_id"
+                                 constraintName="chat_id_fk"
+                                 referencedTableName="chats"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="space_chats"
+                                 baseColumnNames="space_id"
+                                 constraintName="space_id_fk"
+                                 referencedTableName="space"
                                  referencedColumnNames="id"/>
 
         <createTable tableName="chat_groups">
@@ -298,7 +279,15 @@
             <column name="name" type="text">
                 <constraints nullable="false"/>
             </column>
+            <column name="chat_id" type="int">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
+        <addForeignKeyConstraint baseTableName="tags"
+                                 baseColumnNames="chat_id"
+                                 constraintName="chat_id_fk"
+                                 referencedTableName="chats"
+                                 referencedColumnNames="id"/>
 
         <createTable tableName="messages_tags">
             <column name="id" type="int" autoIncrement="true">
@@ -414,6 +403,28 @@
                                  baseColumnNames="commentary_id"
                                  constraintName="commentary_id_fk"
                                  referencedTableName="commentaries"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="space_tasks">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="space_tasks_id_pk"/>
+            </column>
+            <column name="space_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="task_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="space_tasks"
+                                 baseColumnNames="space_id"
+                                 constraintName="space_id_fk"
+                                 referencedTableName="space"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="space_tasks"
+                                 baseColumnNames="task_id"
+                                 constraintName="task_id_fk"
+                                 referencedTableName="task"
                                  referencedColumnNames="id"/>
 
     </changeSet>
