@@ -38,13 +38,13 @@ public class Users implements UserDetails {
     @Column(nullable = false)
     private Roles role;
 
-    @Column(nullable = false)
+    @Column
     private byte[] avatar;
 
     @Column(nullable = false, unique = true)
     private String password;
 
-    @Column(nullable = false)
+    @Column
     private String post;
 
     @Column(nullable = false)

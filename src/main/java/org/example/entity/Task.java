@@ -55,6 +55,6 @@ public class Task {
         }
     }
 
-    @ManyToMany(mappedBy = "task")
-    private List<Task> task;
+    @ManyToMany(mappedBy = "tasks")
+    private List<Space> spaces;
 }
