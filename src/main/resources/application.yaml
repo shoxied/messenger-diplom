@@ -3,8 +3,10 @@ server:
     include-message: always
     include-stacktrace: on_param
     include-binding-errors: always
+  port: 8081
 jwt:
-  secret: 2413fb3709b05939f04cf2e92f7d0897fc2596f9ad0b8a9ea855c7bfebaae892
+  public: 2413fb3709b05939f04cf2e92f7d0897fc2596f9ad0b8a9ea855c7bfebaae892
+  private: 1dfg3b2tn7926359n8y2g9ng28q7w6q48245754n8qw7945vw6h9b4w57v6b9w47
   lifetime: 180m
 spring:
   application:

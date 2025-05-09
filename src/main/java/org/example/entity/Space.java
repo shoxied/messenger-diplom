@@ -40,4 +40,11 @@ public class Space {
             joinColumns = @JoinColumn(name = "space_id"),
             inverseJoinColumns = @JoinColumn(name = "chat_id"))
     private List<Chats> chats;
+
+    @ManyToMany
+    @JoinTable(
+            name = "space_tasks",
+            joinColumns = @JoinColumn(name = "space_id"),
+            inverseJoinColumns = @JoinColumn(name = "task_id"))
+    private List<Task> tasks;
 }

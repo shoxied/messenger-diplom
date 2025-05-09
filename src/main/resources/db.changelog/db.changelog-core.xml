@@ -4,6 +4,5 @@
                    objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
 
     <include file="db.changelog-20241112-diplom-1-init.xml" relativeToChangelogFile="true"/>
-    <include file="db.changelog-20241112-diplom-2-insert-static-tables.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

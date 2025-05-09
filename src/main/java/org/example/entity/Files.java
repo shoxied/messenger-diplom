@@ -25,7 +25,7 @@ public class Files {
             name = "file_messages",
             joinColumns = @JoinColumn(name = "file_id"),
             inverseJoinColumns = @JoinColumn(name = "message_id"))
-    private List<Users> users;
+    private List<Messages> messages;
 
     @ManyToMany
     @JoinTable(

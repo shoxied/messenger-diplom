@@ -6,7 +6,7 @@
     <changeSet author="Ilia Ternovoi" id="20241112-diplom-1-init">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="roles"/>
+                <tableExists tableName="users"/>
             </not>
         </preConditions>
 
@@ -44,7 +44,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="post" type="text">
-                <constraints nullable="false"/>
             </column>
             <column name="create_date" type="timestamp with time zone">
                 <constraints nullable="false"/>
@@ -80,11 +79,6 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="task"
-                                 baseColumnNames="status_id"
-                                 constraintName="status_id_fk"
-                                 referencedTableName="status"
-                                 referencedColumnNames="id"/>
         <addForeignKeyConstraint baseTableName="task"
                                  baseColumnNames="author_id"
                                  constraintName="author_id_fk"
@@ -164,11 +158,6 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="chats"
-                                 baseColumnNames="chat_type_id"
-                                 constraintName="chat_type_id_fk"
-                                 referencedTableName="chat_type"
-                                 referencedColumnNames="id"/>
         <addForeignKeyConstraint baseTableName="chats"
                                  baseColumnNames="creator_id"
                                  constraintName="creator_id_fk"
